@@ -10,6 +10,7 @@ public class DistributedNodeApplication {
 		SpringApplication.run(DistributedNodeApplication.class, args);
 		try {
 			Node node = new Node("node");
+			node.register();
 			while (true){
 
 			}

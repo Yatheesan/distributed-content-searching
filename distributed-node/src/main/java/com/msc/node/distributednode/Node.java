@@ -1,14 +1,16 @@
 package com.msc.node.distributednode;
 
+import java.io.IOException;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.net.ServerSocket;
 import java.util.List;
 import java.util.logging.Logger;
 
 public class Node {
-    private BSClient bsClient;
 
+    private BSClient bsClient;
     private String userName;
     private String ipAddress;
     private int port;
@@ -22,10 +24,20 @@ public class Node {
         this.ipAddress = socket.getLocalAddress().getHostAddress();
         LOG.info(this.ipAddress);
         this.userName = userName;
+        this.port = getFreePort();
+        this.bsClient = new BSClient();
     }
 
-    private List<InetSocketAddress> register(){
+    public List<InetSocketAddress> register(){
         List<InetSocketAddress> targets = null;
+        try{
+            targets = this.bsClient.register(this.userName, this.ipAddress, this.port);
+            LOG.info("Registered Node");
+            System.out.println(targets);
+        } catch (IOException e) {
+            LOG.severe("Registering node failed");
+            e.printStackTrace();
+        }
         return targets;
     }
 
@@ -33,11 +45,27 @@ public class Node {
         // method to unregister from network
     }
 
-    public void joinOtherNodes(){
+    public void joinOtherNodes(List<InetSocketAddress> targets ){
         // method to inform otehr nodes based on BS given ip address of other nodes
     }
 
     public void printRoutingTable(){
         // print the routing table
+    }
+
+    private int getFreePort() {
+        try (ServerSocket socket = new ServerSocket(0)) {
+            socket.setReuseAddress(true);
+            int port = socket.getLocalPort();
+            try {
+                socket.close();
+            } catch (IOException e) {
+                // Ignore IOException on close()
+            }
+            return port;
+        } catch (IOException e) {
+            LOG.severe("Getting free port failed");
+            throw new RuntimeException("Getting free port failed");
+        }
     }
 }

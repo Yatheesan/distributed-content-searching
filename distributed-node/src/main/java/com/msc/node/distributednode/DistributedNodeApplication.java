@@ -8,6 +8,15 @@ public class DistributedNodeApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(DistributedNodeApplication.class, args);
+		try {
+			Node node = new Node("node");
+			while (true){
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 
 }

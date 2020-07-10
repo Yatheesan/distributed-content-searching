@@ -51,7 +51,7 @@ public class Node {
         }
     }
 
-    public void joinOtherNodes(List<InetSocketAddress> targets ){
+    public void informChildNodes(List<InetSocketAddress> targets ){
         // method to inform otehr nodes based on BS given ip address of other nodes
     }
 

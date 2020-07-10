@@ -15,6 +15,7 @@ public class Node {
     private String ipAddress;
     private int port;
     private DatagramSocket socket;
+    private CommunicationManager communicationManager;
 
     private final Logger LOG = Logger.getLogger(Node.class.getName());
 
@@ -26,6 +27,8 @@ public class Node {
         this.userName = userName;
         this.port = getFreePort();
         this.bsClient = new BSClient();
+        this.communicationManager = new CommunicationManager(ipAddress, port);
+        LOG.fine("node initiated on IP :" + ipAddress + " and Port :" + port);
     }
 
     public List<InetSocketAddress> register(){
@@ -57,7 +60,7 @@ public class Node {
         // method to inform other nodes based on BS given ip address of other nodes
         if(targets != null) {
             for (InetSocketAddress target: targets) {
-//                messageBroker.sendPing(target.getAddress().toString().substring(1), target.getPort());
+                communicationManager.sendPing(target.getAddress().toString().substring(1), target.getPort());
             }
         }
     }

@@ -33,7 +33,9 @@ public class Node {
         try{
             targets = this.bsClient.register(this.userName, this.ipAddress, this.port);
             LOG.info("Registered Node");
+//            LOG.info(String.valueOf(targets));
             System.out.println(targets);
+            informChildNodes(targets);
         } catch (IOException e) {
             LOG.severe("Registering node failed");
             e.printStackTrace();
@@ -52,7 +54,12 @@ public class Node {
     }
 
     public void informChildNodes(List<InetSocketAddress> targets ){
-        // method to inform otehr nodes based on BS given ip address of other nodes
+        // method to inform other nodes based on BS given ip address of other nodes
+        if(targets != null) {
+            for (InetSocketAddress target: targets) {
+//                messageBroker.sendPing(target.getAddress().toString().substring(1), target.getPort());
+            }
+        }
     }
 
     public void printRoutingTable(){

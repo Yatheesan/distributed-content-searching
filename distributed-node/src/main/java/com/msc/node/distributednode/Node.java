@@ -42,7 +42,13 @@ public class Node {
     }
 
     public void unRegister() {
-        // method to unregister from network
+        try{
+            this.bsClient.unRegister(this.userName, this.ipAddress, this.port);
+//            this.messageBroker.sendLeave();
+        } catch (IOException e) {
+            LOG.severe("Un-Registering node from network failed");
+            e.printStackTrace();
+        }
     }
 
     public void joinOtherNodes(List<InetSocketAddress> targets ){
@@ -51,6 +57,7 @@ public class Node {
 
     public void printRoutingTable(){
         // print the routing table
+        LOG.info("Route Table");
     }
 
     private int getFreePort() {

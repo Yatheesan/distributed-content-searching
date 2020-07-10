@@ -138,4 +138,40 @@ public class BSClient {
         this.BS_IPAddress = "127.0.0.1";
         this.BS_Port = 55555;
     }
+
+    public boolean unRegister(String userName, String ipAddress, int port) throws IOException{
+
+        String request = String.format(Constants.UNREG_FORMAT, ipAddress, port, userName);
+
+        request = String.format(Constants.MSG_FORMAT, request.length() + 5, request);
+
+        return  processBSUnregisterResponse(sendOrReceive(request));
+
+    }
+
+    private boolean processBSUnregisterResponse(String response){
+
+        StringTokenizer stringTokenizer = new StringTokenizer(response, " ");
+
+        String length = stringTokenizer.nextToken();
+        String status = stringTokenizer.nextToken();
+
+        if (!Constants.UNROK.equals(status)) {
+            throw new IllegalStateException(Constants.UNROK + " not received");
+        }
+
+        int code = Integer.parseInt(stringTokenizer.nextToken());
+
+        switch (code) {
+            case 0:
+                LOG.fine("Successfully unregistered");
+                return true;
+
+            case 9999:
+                LOG.severe("Error while un-registering. " +
+                        "IP and port may not be in the registry or command is incorrect");
+            default:
+                return false;
+        }
+    }
 }

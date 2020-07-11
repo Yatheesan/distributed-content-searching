@@ -7,7 +7,7 @@ import java.util.StringTokenizer;
 import java.util.concurrent.BlockingQueue;
 import java.util.logging.Logger;
 
-public class PingHandler {
+public class PingHandler implements AbstractRequestHandler, AbstractResponseHandler{
 
     private final Logger LOG = Logger.getLogger(PingHandler.class.getName());
 
@@ -173,6 +173,19 @@ public class PingHandler {
 
 
     }
+
+	@Override
+	public void init(RoutingTable routingTable, BlockingQueue<ChannelMessage> channelOut,
+			TimeoutHandler timeoutManager) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void handleResponse(ChannelMessage message) {
+		// TODO Auto-generated method stub
+		
+	}
 
 //    private class pingTimeoutCallback  {
 //

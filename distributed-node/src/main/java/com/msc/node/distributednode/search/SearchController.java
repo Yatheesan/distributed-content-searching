@@ -1,4 +1,4 @@
-package com.msc.search;
+package com.msc.node.distributednode.search;
 
 import java.util.ArrayList;
 import java.util.HashMap;

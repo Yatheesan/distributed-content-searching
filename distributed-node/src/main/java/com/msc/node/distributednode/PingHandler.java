@@ -161,24 +161,25 @@ public class PingHandler implements AbstractRequestHandler, AbstractResponseHand
 //        }
 //    }
 
-    public void init(
-            RoutingTable routingTable,
-            BlockingQueue<ChannelMessage> channelOut
-            ) {
-        // need to check and use some other name for time out manager
-//        TimeoutManager timeoutManager
-//        this.timeoutManager = timeoutManager;
-            this.routingTable = routingTable;
-            this.channelOut = channelOut;
-
-
-    }
+//    public void init(
+//            RoutingTable routingTable,
+//            BlockingQueue<ChannelMessage> channelOut
+//            ) {
+//        // need to check and use some other name for time out manager
+////        TimeoutManager timeoutManager
+////        this.timeoutManager = timeoutManager;
+//            this.routingTable = routingTable;
+//            this.channelOut = channelOut;
+//
+//
+//    }
 
 	@Override
 	public void init(RoutingTable routingTable, BlockingQueue<ChannelMessage> channelOut,
 			TimeoutHandler timeoutManager) {
 		// TODO Auto-generated method stub
-		
+        this.routingTable = routingTable;
+        this.channelOut = channelOut;
 	}
 
 	@Override

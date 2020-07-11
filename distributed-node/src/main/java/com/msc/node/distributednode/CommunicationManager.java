@@ -44,7 +44,7 @@ public class CommunicationManager extends Thread {
 //
 //        this.fileManager = FileManager.getInstance("");
 //
-        this.pingHandler.init(this.routingTable, this.channelOut);
+        this.pingHandler.init(this.routingTable, this.channelOut, null);
 //        this.leaveHandler.init(this.routingTable, this.channelOut, this.timeoutManager);
 //
 //        this.searchQueryHandler = SearchQueryHandler.getInstance();

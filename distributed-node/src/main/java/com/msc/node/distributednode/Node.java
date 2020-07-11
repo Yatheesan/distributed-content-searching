@@ -8,8 +8,8 @@ import java.net.ServerSocket;
 import java.util.List;
 import java.util.logging.Logger;
 
-import com.msc.search.MessageBroker;
-import com.msc.search.SearchController;
+import com.msc.node.distributednode.search.MessageBroker;
+import com.msc.node.distributednode.search.SearchController;
 
 public class Node {
 
@@ -20,7 +20,7 @@ public class Node {
     private MessageBroker messageBroker;
     private SearchController searchController;
     private DatagramSocket socket;
-    private CommunicationManager communicationManager;
+//    private CommunicationManager communicationManager;
 
     private final Logger LOG = Logger.getLogger(Node.class.getName());
 
@@ -64,7 +64,8 @@ public class Node {
     public void unRegister() {
         try{
             this.bsClient.unRegister(this.userName, this.ipAddress, this.port);
-            this.communicationManager.sendLeave();
+            this.messageBroker.sendLeave();
+//            this.communicationManager.sendLeave();
         } catch (IOException e) {
             LOG.severe("Un-Registering node from network failed");
             e.printStackTrace();
@@ -75,14 +76,14 @@ public class Node {
         // method to inform other nodes based on BS given ip address of other nodes
         if(targets != null) {
             for (InetSocketAddress target: targets) {
-                communicationManager.sendPing(target.getAddress().toString().substring(1), target.getPort());
+                messageBroker.sendPing(target.getAddress().toString().substring(1), target.getPort());
             }
         }
     }
 
     public void printRoutingTable(){
         // print the routing table
-        this.communicationManager.getRoutingTable().print();
+        this.messageBroker.getRoutingTable().print();
         LOG.info("Route Table");
     }
 

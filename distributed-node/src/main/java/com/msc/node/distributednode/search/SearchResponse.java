@@ -1,4 +1,4 @@
-package com.msc.search;
+package com.msc.node.distributednode.search;
 
 public class SearchResponse {
 

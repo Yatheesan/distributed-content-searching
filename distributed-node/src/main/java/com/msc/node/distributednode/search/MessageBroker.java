@@ -1,4 +1,4 @@
-package com.msc.search;
+package com.msc.node.distributednode.search;
 
 import java.net.DatagramSocket;
 import java.net.SocketException;
@@ -95,8 +95,7 @@ public class MessageBroker extends Thread {
 
                     AbstractResponseHandler abstractResponseHandler
                             = ResponseHandlerFactory.getResponseHandler(
-                            message.getMessage().split(" ")[1],
-                            this
+                            message.getMessage().split(" ")[1],this
                     );
 
                     if (abstractResponseHandler != null){

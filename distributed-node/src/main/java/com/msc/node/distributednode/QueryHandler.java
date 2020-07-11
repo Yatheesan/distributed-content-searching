@@ -1,6 +1,6 @@
 package com.msc.node.distributednode;
 
-import com.msc.search.SearchResponse;
+import com.msc.node.distributednode.search.SearchResponse;
 
 import java.util.*;
 import java.util.concurrent.BlockingQueue;

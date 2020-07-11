@@ -4,7 +4,7 @@ package com.msc.node.distributednode;
 
 import java.util.logging.Logger;
 
-import com.msc.search.MessageBroker;
+import com.msc.node.distributednode.search.MessageBroker;
 
 public class ResponseHandlerFactory {
 

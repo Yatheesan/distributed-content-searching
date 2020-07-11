@@ -9,7 +9,11 @@ Gradle 4+ or Maven 3.2+
 
 Build command - (Run the command inside the distributed-content-searching folder)
 
-mvn -Dmaven.test.skip=true package
+mvn clean install
+
+or 
+
+mvn -Dmaven.test.skip=true clean install
 
 the build jar is available in side the following path
 distributed-content-searching\distributed-node\target

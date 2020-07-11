@@ -81,11 +81,6 @@ public class Node {
         }
     }
 
-    public void printRoutingTable(){
-        // print the routing table
-        this.messageBroker.getRoutingTable().print();
-        LOG.info("Route Table");
-    }
 
     public int doSearch(String keyword){
         return this.searchController.doSearch(keyword);

@@ -67,6 +67,7 @@ public class Node {
 
     public void printRoutingTable(){
         // print the routing table
+        this.communicationManager.getRoutingTable().print();
         LOG.info("Route Table");
     }
 

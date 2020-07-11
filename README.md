@@ -1,6 +1,12 @@
 # distributed-content-searching
 Distributed Systems Project to Search Contents in a Distributed Application Layer Network
 
+###You need the following prerequisite
+
+A text editor or IDE
+JDK 1.8 or later
+Gradle 4+ or Maven 3.2+
+
 Build command - (Run the command inside the distributed-content-searching folder)
 
 mvn -Dmaven.test.skip=true package

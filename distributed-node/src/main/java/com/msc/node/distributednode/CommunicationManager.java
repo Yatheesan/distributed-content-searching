@@ -22,7 +22,7 @@ public class CommunicationManager extends Thread {
     private BlockingQueue<ChannelMessage> channelOut;
 
     private RoutingTable routingTable;
-//    private PingHandler pingHandler;
+    private PingHandler pingHandler;
 //    private LeaveHandler leaveHandler;
 //    private SearchQueryHandler searchQueryHandler;
     private FileManager fileManager;
@@ -39,7 +39,7 @@ public class CommunicationManager extends Thread {
 
 //        this.routingTable = new RoutingTable(address, port);
 //
-//        this.pingHandler = PingHandler.getInstance();
+        this.pingHandler = PingHandler.getInstance();
 //        this.leaveHandler = LeaveHandler.getInstance();
 //
 //        this.fileManager = FileManager.getInstance("");

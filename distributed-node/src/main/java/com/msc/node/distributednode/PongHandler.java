@@ -40,7 +40,7 @@ public class PongHandler implements AbstractRequestHandler, AbstractResponseHand
                 + " port: " + message.getPort());
 
         StringTokenizer stringToken = new StringTokenizer(message.getMessage(), " ");
-
+        String value = stringToken.nextToken();
         String keyword = stringToken.nextToken();
         String address = stringToken.nextToken().trim();
         int port = Integer.parseInt(stringToken.nextToken().trim());

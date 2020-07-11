@@ -47,7 +47,7 @@ public class Constants {
 
     public static final int HOP_COUNT = 5;
 
-    public static final String FILE_NAMES = "FileNames.txt";
+    public static final String FILE_NAMES = "fileNames.txt";
 
     public static final String PING_MESSAGE_ID_FORMAT = "PINGID:%s:%s";
 

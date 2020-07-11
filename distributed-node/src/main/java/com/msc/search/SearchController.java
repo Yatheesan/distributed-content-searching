@@ -43,46 +43,6 @@ public class SearchController {
         return fileDownloadOptions.size();
     }
 
-    List<String> doUISearch(String keyword) {
-
-        Map<String, SearchResponse> SearchResponses
-                = new HashMap<String, SearchResponse>();
-
-        QueryHandler queryHitHandler = QueryHandler.getInstance();
-        queryHitHandler.setSearchResutls(SearchResponses);
-        queryHitHandler.setSearchInitiatedTime(System.currentTimeMillis());
-
-        this.msgBroker.doSearch(keyword);
-
-        System.out.println("Results are retireving..");
-
-        try {
-            Thread.sleep(3000);
-
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        List<String> results = new ArrayList<String>();
-
-        int fileIndex = 1;
-
-        this.fileDownloadOptions = new HashMap<Integer, SearchResponse>();
-
-        for (String s : SearchResponses.keySet()) {
-            SearchResponse SearchResponse = SearchResponses.get(s);
-            String temp = "" + SearchResponse.getName() + "\t" +
-                    SearchResponse.getAddress() + ":" + SearchResponse.getPort() + "\t" +
-                    SearchResponse.getNumberOfHops() + "\t" + SearchResponse.getTime() + "ms";
-            this.fileDownloadOptions.put(fileIndex, SearchResponse);
-            results.add(temp);
-            fileIndex++;
-        }
-
-        this.clearSearchResponses();
-
-        return results;
-    }
 
     private void clearSearchResponses() {
         QueryHandler queryHitHandler = QueryHandler.getInstance();

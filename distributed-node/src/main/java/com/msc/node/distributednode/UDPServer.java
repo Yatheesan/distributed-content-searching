@@ -13,6 +13,7 @@ public class UDPServer extends Thread {
     public UDPServer(BlockingQueue<ChannelMessage> channelIn, DatagramSocket socket) {
         this.channelIn = channelIn;
         this.socket = socket;
+        System.out.println("UDPServer started");
     }
 
     @Override

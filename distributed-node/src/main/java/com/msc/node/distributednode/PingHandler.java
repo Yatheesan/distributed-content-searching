@@ -111,20 +111,20 @@ public class PingHandler {
 //    }
 
     public void sendPing(String address, int port) {
-//        String payload = String.format(Constants.PING_FORMAT,
-//                this.routingTable.getAddress(),
-//                this.routingTable.getPort());
-//        String rawMessage = String.format(Constants.MSG_FORMAT, payload.length() + 5,payload);
-//        ChannelMessage message = new ChannelMessage(address, port,rawMessage);
-//        this.pingFailureCount.putIfAbsent(
-//                String.format(Constants.PING_MESSAGE_ID_FORMAT, address, port),
-//                0);
+        String payload = String.format(Constants.PING_FORMAT,
+                this.routingTable.getAddress(),
+                this.routingTable.getPort());
+        String rawMessage = String.format(Constants.MSG_FORMAT, payload.length() + 5,payload);
+        ChannelMessage message = new ChannelMessage(address, port,rawMessage);
+        this.pingFailureCount.putIfAbsent(
+                String.format(Constants.PING_MESSAGE_ID_FORMAT, address, port),
+                0);
 //        this.timeoutManager.registerRequest(
 //                String.format(Constants.PING_MESSAGE_ID_FORMAT, address, port),
 //                Constants.PING_TIMEOUT,
 //                this.callback
 //                );
-//        this.sendRequest(message);
+        this.sendRequest(message);
 
     }
 
@@ -161,15 +161,18 @@ public class PingHandler {
 //        }
 //    }
 
-//    public void init(
-//            RoutingTable routingTable,
-//            BlockingQueue<ChannelMessage> channelOut,
-//            TimeoutManager timeoutManager) {
-//            this.routingTable = routingTable;
-//            this.channelOut = channelOut;
-//            this.timeoutManager = timeoutManager;
-//
-//    }
+    public void init(
+            RoutingTable routingTable,
+            BlockingQueue<ChannelMessage> channelOut
+            ) {
+        // need to check and use some other name for time out manager
+//        TimeoutManager timeoutManager
+//        this.timeoutManager = timeoutManager;
+            this.routingTable = routingTable;
+            this.channelOut = channelOut;
+
+
+    }
 
 //    private class pingTimeoutCallback  {
 //

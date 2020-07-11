@@ -49,7 +49,7 @@ public class Node {
     public void unRegister() {
         try{
             this.bsClient.unRegister(this.userName, this.ipAddress, this.port);
-//            this.messageBroker.sendLeave();
+            this.communicationManager.sendLeave();
         } catch (IOException e) {
             LOG.severe("Un-Registering node from network failed");
             e.printStackTrace();

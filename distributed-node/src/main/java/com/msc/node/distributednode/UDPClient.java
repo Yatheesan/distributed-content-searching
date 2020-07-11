@@ -13,6 +13,7 @@ public class UDPClient extends Thread {
     public UDPClient(BlockingQueue<ChannelMessage> channelOut, DatagramSocket socket) {
         this.channelOut = channelOut;
         this.socket = socket;
+        System.out.println("UDPClient started");
     }
 
     @Override

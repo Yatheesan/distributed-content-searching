@@ -23,9 +23,9 @@ public class SearchController {
         Map<String, SearchResponse> response
                 = new HashMap<String, SearchResponse>();
 
-        QueryHandler queryHitHandler = QueryHandler.getInstance();
-        queryHitHandler.setSearchResutls(response);
-        queryHitHandler.setSearchInitiatedTime(System.currentTimeMillis());
+        QueryHandler queryHandler = QueryHandler.getInstance();
+        queryHandler.setSearchResutls(response);
+        queryHandler.setSearchInitiatedTime(System.currentTimeMillis());
 
         this.msgBroker.doSearch(searchWord);
 

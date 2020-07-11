@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 
 public class QueryHandler implements AbstractResponseHandler {
 
-    private static final Logger LOG = Logger.getLogger(QueryHandler.class.getName());
+	private static final Logger LOG = Logger.getLogger(QueryHandler.class.getName());
 
     private RoutingTable routingTable;
 
@@ -16,9 +16,9 @@ public class QueryHandler implements AbstractResponseHandler {
 
     private TimeoutHandler timeoutHandler;
 
-    private static QueryHandler queryHitHandler;
+    private static QueryHandler queryHandler;
 
-    private Map<String, SearchResponse> searchResponse;
+    private Map<String, SearchResponse> searchResutls;
 
     private long searchInitiatedTime;
 
@@ -27,11 +27,11 @@ public class QueryHandler implements AbstractResponseHandler {
     }
 
     public static synchronized QueryHandler getInstance(){
-        if (queryHitHandler == null){
-            queryHitHandler = new QueryHandler();
+        if (queryHandler == null){
+            queryHandler = new QueryHandler();
         }
 
-        return queryHitHandler;
+        return queryHandler;
     }
 
     @Override
@@ -42,6 +42,8 @@ public class QueryHandler implements AbstractResponseHandler {
 
         StringTokenizer stringToken = new StringTokenizer(message.getMessage(), " ");
 
+        String length = stringToken.nextToken();
+        String keyword = stringToken.nextToken();
         int filesCount = Integer.parseInt(stringToken.nextToken());
         String address = stringToken.nextToken().trim();
         int port = Integer.parseInt(stringToken.nextToken().trim());
@@ -54,9 +56,9 @@ public class QueryHandler implements AbstractResponseHandler {
 
             String fileName = StringEncoderDecoder.decode(stringToken.nextToken());
 
-            if (this.searchResponse != null){
-                if(!this.searchResponse.containsKey(addressKey + fileName)){
-                    this.searchResponse.put(addressKey + fileName,
+            if (this.searchResutls != null){
+                if(!this.searchResutls.containsKey(addressKey + fileName)){
+                    this.searchResutls.put(addressKey + fileName,
                             new SearchResponse(fileName, address, port, hops,
                                     (System.currentTimeMillis() - searchInitiatedTime)));
 
@@ -75,7 +77,7 @@ public class QueryHandler implements AbstractResponseHandler {
     }
 
     public void setSearchResutls(Map<String, SearchResponse> searchResutls) {
-        this.searchResponse = searchResutls;
+        this.searchResutls = searchResutls;
     }
 
     public void setSearchInitiatedTime(long currentTimeinMillis){

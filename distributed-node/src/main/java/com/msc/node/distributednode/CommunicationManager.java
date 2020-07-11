@@ -72,6 +72,7 @@ public class CommunicationManager extends Thread {
     }
 
     public void process() {
+        LOG.info("CommunicationManager Process start");
         while (process) {
             try {
                 ChannelMessage message = channelIn.poll(100, TimeUnit.MILLISECONDS);

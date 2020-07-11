@@ -21,8 +21,7 @@ public class DistributedNodeApplication {
 				// it to search manager and proceed the search
 				System.out.println("\nChoose one of the following options : ");
 				System.out.println("A) Search for a file");
-				System.out.println("B) Get the routing table");
-				System.out.println("C) Leave the network");
+				System.out.println("B) Leave the network");
 
 				System.out.println("\nPlease enter the option : ");
 
@@ -39,8 +38,6 @@ public class DistributedNodeApplication {
 						System.out.println("Invalid search!!!");
 					}
 				} else if (commandOption.equals("B")){
-					node.printRoutingTable();
-				} else if (commandOption.equals("C")){
 					node.unRegister();
 					System.exit(0);
 				} else {

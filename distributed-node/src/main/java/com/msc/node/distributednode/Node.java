@@ -8,27 +8,42 @@ import java.net.ServerSocket;
 import java.util.List;
 import java.util.logging.Logger;
 
+import com.msc.search.MessageBroker;
+import com.msc.search.SearchController;
+
 public class Node {
 
     private BSClient bsClient;
     private String userName;
     private String ipAddress;
     private int port;
+    private MessageBroker messageBroker;
+    private SearchController searchController;
     private DatagramSocket socket;
     private CommunicationManager communicationManager;
 
     private final Logger LOG = Logger.getLogger(Node.class.getName());
 
     public Node(String userName) throws Exception{
-        socket = new DatagramSocket();
-        socket.connect(InetAddress.getByName("8.8.8.8"),10002);
-        this.ipAddress = socket.getLocalAddress().getHostAddress();
-        LOG.info(this.ipAddress);
+    	
+       socket = new DatagramSocket();
+       socket.connect(InetAddress.getByName("8.8.8.8"),10002);
+       this.ipAddress = socket.getLocalAddress().getHostAddress();
+
         this.userName = userName;
         this.port = getFreePort();
+        FileManager fileManager = FileManager.getInstance(userName);
+
         this.bsClient = new BSClient();
-        this.communicationManager = new CommunicationManager(ipAddress, port);
-        LOG.fine("node initiated on IP :" + ipAddress + " and Port :" + port);
+        this.messageBroker = new MessageBroker(ipAddress, port);
+
+        this.searchController = new SearchController(this.messageBroker);
+
+        messageBroker.start();
+
+        LOG.fine("Node initiated on IP :" + ipAddress + " and Port :" + port);
+        
+        LOG.info(this.ipAddress);
     }
 
     public List<InetSocketAddress> register(){
@@ -71,6 +86,10 @@ public class Node {
         LOG.info("Route Table");
     }
 
+    public int doSearch(String keyword){
+        return this.searchController.doSearch(keyword);
+    }
+    
     private int getFreePort() {
         try (ServerSocket socket = new ServerSocket(0)) {
             socket.setReuseAddress(true);

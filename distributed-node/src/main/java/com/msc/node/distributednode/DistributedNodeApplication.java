@@ -20,19 +20,27 @@ public class DistributedNodeApplication {
 				// take an input for search query and pass
 				// it to search manager and proceed the search
 				System.out.println("\nChoose one of the following options : ");
-				System.out.println("1) Do a search");
-				System.out.println("2) Print the routing table");
-				System.out.println("3) Exit the network");
+				System.out.println("A) Search for a file");
+				System.out.println("B) Get the routing table");
+				System.out.println("C) Leave the network");
 
 				System.out.println("\nPlease enter the option : ");
 
 				String commandOption = scanner.nextLine();
 
-				if (commandOption.equals("1")){
-					// search
-				} else if (commandOption.equals("2")){
+				if (commandOption.equals("A")){
+					System.out.println("\nPlease provide a file name : ");
+					String searchQuery = scanner.nextLine();
+
+					if (searchQuery != null && !searchQuery.equals("")) {
+						node.doSearch(searchQuery);
+
+					} else {
+						System.out.println("Invalid search!!!");
+					}
+				} else if (commandOption.equals("B")){
 					node.printRoutingTable();
-				} else if (commandOption.equals("3")){
+				} else if (commandOption.equals("C")){
 					node.unRegister();
 					System.exit(0);
 				} else {

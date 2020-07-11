@@ -14,11 +14,11 @@ public class SearchController {
 
     private Map<Integer, SearchResponse> fileDownloadOptions;
 
-    SearchController(MessageBroker msgBroker) {
+    public SearchController(MessageBroker msgBroker) {
         this.msgBroker = msgBroker;
     }
 
-    int doSearch(String searchWord) {
+    public int doSearch(String searchWord) {
 
         Map<String, SearchResponse> response
                 = new HashMap<String, SearchResponse>();

@@ -89,7 +89,7 @@ public class MessageBroker extends Thread {
             try {
                 ChannelMessage message = channelIn.poll(100, TimeUnit.MILLISECONDS);
                 if (message != null) {
-                    LOG.info("Received Message: " + message.getMessage()
+                    LOG.info("Received Message: "
                             + " from: " + message.getAddress()
                             + " port: " + message.getPort());
 

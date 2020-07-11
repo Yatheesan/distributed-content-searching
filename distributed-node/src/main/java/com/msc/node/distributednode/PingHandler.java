@@ -165,7 +165,6 @@ public class PingHandler implements AbstractRequestHandler, AbstractResponseHand
             RoutingTable routingTable,
             BlockingQueue<ChannelMessage> channelOut
             ) {
-        // need to check and use some other name for time out manager
 //        TimeoutManager timeoutManager
 //        this.timeoutManager = timeoutManager;
             this.routingTable = routingTable;
@@ -188,7 +187,7 @@ public class PingHandler implements AbstractRequestHandler, AbstractResponseHand
         public void onTimeout(String messageId) {
             pingFailureCount.put(messageId,pingFailureCount.get(messageId) + 1);
             if(pingFailureCount.get(messageId) >= Constants.PING_RETRY) {
-                LOG.fine("neighbour lost :( =>" + messageId);
+                LOG.fine("neighbour lost connection :( =>" + messageId);
                 routingTable.removeNeighbour(
                         messageId.split(":")[1],
                         Integer.valueOf(messageId.split(":")[2]));

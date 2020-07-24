@@ -8,8 +8,10 @@ import java.net.ServerSocket;
 import java.util.List;
 import java.util.logging.Logger;
 
+import com.msc.node.distributednode.fileTransfer.FileTransferClient;
 import com.msc.node.distributednode.search.MessageBroker;
 import com.msc.node.distributednode.search.SearchController;
+import com.msc.node.distributednode.search.SearchResponse;
 
 public class Node {
 
@@ -20,7 +22,6 @@ public class Node {
     private MessageBroker messageBroker;
     private SearchController searchController;
     private DatagramSocket socket;
-//    private CommunicationManager communicationManager;
 
     private final Logger LOG = Logger.getLogger(Node.class.getName());
 
@@ -81,6 +82,19 @@ public class Node {
         }
     }
 
+    public void getFile(int fileOption) {
+        try {
+        	SearchResponse fileDetail = this.searchController.getFileDetails(fileOption);
+            System.out.println("The file you requested is " + fileDetail.getName());
+            FileTransferClient fileTransferClient = new FileTransferClient(fileDetail.getAddress(), fileDetail.getTcpPort(),
+                    fileDetail.getName());
+
+            System.out.println("Waiting for file download...");
+            Thread.sleep(Constants.FILE_DOWNLOAD_TIMEOUT);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public int doSearch(String keyword){
         return this.searchController.doSearch(keyword);

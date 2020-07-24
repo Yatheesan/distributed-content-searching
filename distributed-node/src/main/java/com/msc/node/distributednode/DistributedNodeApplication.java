@@ -32,7 +32,31 @@ public class DistributedNodeApplication {
 					String searchQuery = scanner.nextLine();
 
 					if (searchQuery != null && !searchQuery.equals("")) {
-						node.doSearch(searchQuery);
+						int results = node.doSearch(searchQuery);
+						
+						if (results != 0) {
+
+							while (true) {
+
+								try {
+									System.out.println("\nEnter the option number of the file you need to download : ");
+									String fileOption = scanner.nextLine();
+
+									int option = Integer.parseInt(fileOption);
+
+									if (option > results) {
+										System.out.println("Incorrect file!!");
+										continue;
+									}
+
+									node.getFile(option);
+									break;
+
+								} catch (NumberFormatException e) {
+									System.out.println("Incorrect file");
+								}
+							}
+						}
 
 					} else {
 						System.out.println("Invalid search!!!");

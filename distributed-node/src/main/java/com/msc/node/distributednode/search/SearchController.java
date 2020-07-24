@@ -55,11 +55,11 @@ public class SearchController {
         System.out.println("\nFile search results : ");
 
         ArrayList<String> headers = new ArrayList<String>();
-        headers.add("Option No");
-        headers.add("FileName");
-        headers.add("Source");
-        headers.add("QueryHit time (ms)");
-        headers.add("Hop count");
+        headers.add("Number");
+        headers.add("Name");
+        headers.add("Source address");
+        headers.add("Searching time (ms)");
+        headers.add("Hop counts");
 
         ArrayList<ArrayList<String>> content = new ArrayList<ArrayList<String>>();
 

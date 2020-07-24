@@ -7,27 +7,27 @@ import java.util.StringTokenizer;
 import java.util.concurrent.BlockingQueue;
 import java.util.logging.Logger;
 
-public class SearchQueryHandler implements AbstractResponseHandler, AbstractRequestHandler {
+public class SearchQueryHandling implements AbstractResponseHandler, AbstractRequestHandler {
 
-    private final Logger LOG = Logger.getLogger(SearchQueryHandler.class.getName());
+    private final Logger LOG = Logger.getLogger(SearchQueryHandling.class.getName());
 
     private RoutingTable routingTable;
 
-    private BlockingQueue<ChannelMessage> channelOut;
+    private BlockingQueue<MessageCreater> channelOut;
 
     private TimeoutHandler timeoutHandler;
 
-    private static SearchQueryHandler searchQueryHandler;
+    private static SearchQueryHandling searchQueryHandler;
 
     private FileManager fileManager;
 
-    private SearchQueryHandler(){
+    private SearchQueryHandling(){
         fileManager = FileManager.getInstance("");
     }
 
-    public synchronized static SearchQueryHandler getInstance(){
+    public synchronized static SearchQueryHandling getInstance(){
         if (searchQueryHandler == null){
-            searchQueryHandler = new SearchQueryHandler();
+            searchQueryHandler = new SearchQueryHandling();
         }
         return searchQueryHandler;
     }
@@ -42,7 +42,7 @@ public class SearchQueryHandler implements AbstractResponseHandler, AbstractRequ
 
         String rawMessage = String.format(Constants.MSG_FORMAT, payload.length() + 5, payload);
 
-        ChannelMessage initialMessage = new ChannelMessage(
+        MessageCreater initialMessage = new MessageCreater(
                 this.routingTable.getAddress(),
                 this.routingTable.getPort(),
                 rawMessage);
@@ -51,7 +51,7 @@ public class SearchQueryHandler implements AbstractResponseHandler, AbstractRequ
     }
 
     @Override
-    public void sendRequest(ChannelMessage message) {
+    public void sendRequest(MessageCreater message) {
         try {
             channelOut.put(message);
         } catch (InterruptedException e) {
@@ -60,7 +60,7 @@ public class SearchQueryHandler implements AbstractResponseHandler, AbstractRequ
     }
 
     @Override
-    public void init(RoutingTable routingTable, BlockingQueue<ChannelMessage> channelOut,
+    public void init(RoutingTable routingTable, BlockingQueue<MessageCreater> channelOut,
                      TimeoutHandler timeoutHandler) {
         this.routingTable = routingTable;
         this.channelOut = channelOut;
@@ -68,7 +68,7 @@ public class SearchQueryHandler implements AbstractResponseHandler, AbstractRequ
     }
 
     @Override
-    public void handleResponse(ChannelMessage message) {
+    public void handleResponse(MessageCreater message) {
         LOG.fine("Received SER : " + message.getMessage()
                 + " from: " + message.getAddress()
                 + " port: " + message.getPort());
@@ -106,7 +106,7 @@ public class SearchQueryHandler implements AbstractResponseHandler, AbstractRequ
 
             String rawMessage = String.format(Constants.MSG_FORMAT, payload.length() + 5, payload);
 
-            ChannelMessage queryHitMessage = new ChannelMessage(address,
+            MessageCreater queryHitMessage = new MessageCreater(address,
                     port,
                     rawMessage);
 
@@ -134,7 +134,7 @@ public class SearchQueryHandler implements AbstractResponseHandler, AbstractRequ
 
                 String rawMessage = String.format(Constants.MSG_FORMAT, payload.length() + 5, payload);
 
-                ChannelMessage queryMessage = new ChannelMessage(neighbour.getAddress(),
+                MessageCreater queryMessage = new MessageCreater(neighbour.getAddress(),
                         neighbour.getPort(),
                         rawMessage);
 

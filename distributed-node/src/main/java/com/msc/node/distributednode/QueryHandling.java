@@ -6,36 +6,36 @@ import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.logging.Logger;
 
-public class QueryHandler implements AbstractResponseHandler {
+public class QueryHandling implements AbstractResponseHandler {
 
-	private static final Logger LOG = Logger.getLogger(QueryHandler.class.getName());
+	private static final Logger LOG = Logger.getLogger(QueryHandling.class.getName());
 
     private RoutingTable routingTable;
 
-    private BlockingQueue<ChannelMessage> channelOut;
+    private BlockingQueue<MessageCreater> channelOut;
 
     private TimeoutHandler timeoutHandler;
 
-    private static QueryHandler queryHandler;
+    private static QueryHandling queryHandler;
 
     private Map<String, SearchResponse> searchResutls;
 
     private long searchInitiatedTime;
 
-    private QueryHandler(){
+    private QueryHandling(){
 
     }
 
-    public static synchronized QueryHandler getInstance(){
+    public static synchronized QueryHandling getInstance(){
         if (queryHandler == null){
-            queryHandler = new QueryHandler();
+            queryHandler = new QueryHandling();
         }
 
         return queryHandler;
     }
 
     @Override
-    public synchronized void handleResponse(ChannelMessage message) {
+    public synchronized void handleResponse(MessageCreater message) {
         LOG.fine("Received SEROK : " + message.getMessage()
                 + " from: " + message.getAddress()
                 + " port: " + message.getPort());
@@ -70,7 +70,7 @@ public class QueryHandler implements AbstractResponseHandler {
     }
 
     @Override
-    public void init(RoutingTable routingTable, BlockingQueue<ChannelMessage> channelOut, TimeoutHandler timeoutHandler) {
+    public void init(RoutingTable routingTable, BlockingQueue<MessageCreater> channelOut, TimeoutHandler timeoutHandler) {
         this.routingTable = routingTable;
         this.channelOut = channelOut;
         this.timeoutHandler = timeoutHandler;

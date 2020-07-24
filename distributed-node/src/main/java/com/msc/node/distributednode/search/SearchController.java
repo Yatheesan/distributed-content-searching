@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.msc.node.distributednode.QueryHandler;
+import com.msc.node.distributednode.QueryHandling;
 import com.msc.node.distributednode.ResultTable;
 
 public class SearchController {
@@ -23,7 +23,7 @@ public class SearchController {
         Map<String, SearchResponse> response
                 = new HashMap<String, SearchResponse>();
 
-        QueryHandler queryHandler = QueryHandler.getInstance();
+        QueryHandling queryHandler = QueryHandling.getInstance();
         queryHandler.setSearchResutls(response);
         queryHandler.setSearchInitiatedTime(System.currentTimeMillis());
 
@@ -45,7 +45,7 @@ public class SearchController {
 
 
     private void clearSearchResponses() {
-        QueryHandler queryHitHandler = QueryHandler.getInstance();
+        QueryHandling queryHitHandler = QueryHandling.getInstance();
 
         queryHitHandler.setSearchResutls(null);
     }

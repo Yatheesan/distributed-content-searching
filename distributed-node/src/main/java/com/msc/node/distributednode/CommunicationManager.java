@@ -18,11 +18,11 @@ public class CommunicationManager extends Thread {
     private final UDPServer server;
     private final UDPClient client;
 
-    private BlockingQueue<ChannelMessage> channelIn;
-    private BlockingQueue<ChannelMessage> channelOut;
+    private BlockingQueue<MessageCreater> channelIn;
+    private BlockingQueue<MessageCreater> channelOut;
 
     private RoutingTable routingTable;
-    private PingHandler pingHandler;
+    private PingHandling pingHandler;
 //    private LeaveHandler leaveHandler;
 //    private SearchQueryHandler searchQueryHandler;
     private FileManager fileManager;
@@ -30,16 +30,16 @@ public class CommunicationManager extends Thread {
     private TimeoutHandler timeoutHandler = new TimeoutHandler();
 
     public CommunicationManager(String address, int port) throws SocketException {
-        channelIn = new LinkedBlockingQueue<ChannelMessage>();
+        channelIn = new LinkedBlockingQueue<MessageCreater>();
         DatagramSocket socket = new DatagramSocket(port);
         this.server = new UDPServer(channelIn, socket);
 
-        channelOut = new LinkedBlockingQueue<ChannelMessage>();
+        channelOut = new LinkedBlockingQueue<MessageCreater>();
         this.client = new UDPClient(channelOut, new DatagramSocket());
 
         this.routingTable = new RoutingTable(address, port);
 //
-        this.pingHandler = PingHandler.getInstance();
+        this.pingHandler = PingHandling.getInstance();
 //        this.leaveHandler = LeaveHandler.getInstance();
 //
 //        this.fileManager = FileManager.getInstance("");
@@ -75,7 +75,7 @@ public class CommunicationManager extends Thread {
         LOG.info("CommunicationManager Process start");
         while (process) {
             try {
-                ChannelMessage message = channelIn.poll(100, TimeUnit.MILLISECONDS);
+                MessageCreater message = channelIn.poll(100, TimeUnit.MILLISECONDS);
                 if (message != null) {
                     LOG.info("Received Message: " + message.getMessage()
                             + " from: " + message.getAddress()
@@ -112,11 +112,11 @@ public class CommunicationManager extends Thread {
 //        this.searchQueryHandler.doSearch(keyword);
     }
 
-    public BlockingQueue<ChannelMessage> getChannelIn() {
+    public BlockingQueue<MessageCreater> getChannelIn() {
         return channelIn;
     }
 
-    public BlockingQueue<ChannelMessage> getChannelOut() {
+    public BlockingQueue<MessageCreater> getChannelOut() {
         return channelOut;
     }
 

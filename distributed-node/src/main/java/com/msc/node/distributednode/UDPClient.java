@@ -7,10 +7,10 @@ import java.net.InetAddress;
 import java.util.concurrent.BlockingQueue;
 
 public class UDPClient extends Thread {
-    private final BlockingQueue<ChannelMessage> channelOut;
+    private final BlockingQueue<MessageCreater> channelOut;
     private final DatagramSocket socket;
     private volatile boolean process = true;
-    public UDPClient(BlockingQueue<ChannelMessage> channelOut, DatagramSocket socket) {
+    public UDPClient(BlockingQueue<MessageCreater> channelOut, DatagramSocket socket) {
         this.channelOut = channelOut;
         this.socket = socket;
         System.out.println("UDPClient started");
@@ -20,7 +20,7 @@ public class UDPClient extends Thread {
     public void run() {
         while (process) {
             try {
-                ChannelMessage message = channelOut.take();
+                MessageCreater message = channelOut.take();
                 String address = message.getAddress();
                 int port = message.getPort();
                 String payload = message.getMessage();

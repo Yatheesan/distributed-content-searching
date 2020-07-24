@@ -7,31 +7,31 @@ import java.util.StringTokenizer;
 import java.util.concurrent.BlockingQueue;
 import java.util.logging.Logger;
 
-public class PingHandler implements AbstractRequestHandler, AbstractResponseHandler{
+public class PingHandling implements AbstractRequestHandler, AbstractResponseHandler{
 
-    private final Logger LOG = Logger.getLogger(PingHandler.class.getName());
+    private final Logger LOG = Logger.getLogger(PingHandling.class.getName());
 
-    private static PingHandler pingHandler;
+    private static PingHandling pingHandler;
 
     private boolean initiated;
-    private BlockingQueue<ChannelMessage> channelOut;
+    private BlockingQueue<MessageCreater> channelOut;
     private RoutingTable routingTable;
     private TimeoutHandler timeoutManager;
     private Map<String, Integer> pingFailureCount = new HashMap<String, Integer>();
     private TimeoutCallback callback = new pingTimeoutCallback();
 
-    private PingHandler() {
+    private PingHandling() {
         this.initiated = true;
     }
 
-    public synchronized static PingHandler getInstance() {
+    public synchronized static PingHandling getInstance() {
         if (pingHandler == null){
-            pingHandler = new PingHandler();
+            pingHandler = new PingHandling();
         }
         return pingHandler;
     }
 
-    public void sendRequest(ChannelMessage message) {
+    public void sendRequest(MessageCreater message) {
         try {
             channelOut.put(message);
         } catch (InterruptedException e) {
@@ -40,7 +40,7 @@ public class PingHandler implements AbstractRequestHandler, AbstractResponseHand
     }
 
     @Override
-    public void handleResponse(ChannelMessage message) {
+    public void handleResponse(MessageCreater message) {
 
         LOG.fine("Received PING : " + message.getMessage()
                 + " from: " + message.getAddress()
@@ -71,7 +71,7 @@ public class PingHandler implements AbstractRequestHandler, AbstractResponseHand
                                 this.routingTable.getAddress(), this.routingTable.getPort());
 
                         String rawMessage = String.format(Constants.MSG_FORMAT, payload.length() + 5, payload);
-                        ChannelMessage outGoingMsg = new ChannelMessage(address,
+                        MessageCreater outGoingMsg = new MessageCreater(address,
                                 port, rawMessage);
                         this.sendRequest(outGoingMsg);
                     } else {
@@ -100,7 +100,7 @@ public class PingHandler implements AbstractRequestHandler, AbstractResponseHand
                             this.routingTable.getAddress(), this.routingTable.getPort());
 
                     String rawMessage = String.format(Constants.MSG_FORMAT, payload.length() + 5, payload);
-                    ChannelMessage outGoingMsg = new ChannelMessage(address,
+                    MessageCreater outGoingMsg = new MessageCreater(address,
                             port, rawMessage);
                     this.sendRequest(outGoingMsg);
                 }
@@ -115,7 +115,7 @@ public class PingHandler implements AbstractRequestHandler, AbstractResponseHand
                 this.routingTable.getAddress(),
                 this.routingTable.getPort());
         String rawMessage = String.format(Constants.MSG_FORMAT, payload.length() + 5,payload);
-        ChannelMessage message = new ChannelMessage(address, port,rawMessage);
+        MessageCreater message = new MessageCreater(address, port,rawMessage);
         this.pingFailureCount.putIfAbsent(
                 String.format(Constants.PING_MESSAGE_ID_FORMAT, address, port),
                 0);
@@ -136,7 +136,7 @@ public class PingHandler implements AbstractRequestHandler, AbstractResponseHand
                 Constants.BPING_HOP_LIMIT);
         String rawMessage = String.format(Constants.MSG_FORMAT, payload.length() + 5,payload);
         for (String target: targets) {
-            ChannelMessage message = new ChannelMessage(
+            MessageCreater message = new MessageCreater(
                     target.split(":")[0],
                     Integer.parseInt(target.split(":")[1]), rawMessage);
             sendRequest(message);
@@ -154,7 +154,7 @@ public class PingHandler implements AbstractRequestHandler, AbstractResponseHand
                 currentHop);
         String rawMessage = String.format(Constants.MSG_FORMAT, payload.length() + 5,payload);
         for (String target: targets) {
-            ChannelMessage message = new ChannelMessage(
+            MessageCreater message = new MessageCreater(
                     target.split(":")[0],
                     Integer.parseInt(target.split(":")[1]), rawMessage);
             sendRequest(message);
@@ -163,7 +163,7 @@ public class PingHandler implements AbstractRequestHandler, AbstractResponseHand
 
     public void init(
             RoutingTable routingTable,
-            BlockingQueue<ChannelMessage> channelOut
+            BlockingQueue<MessageCreater> channelOut
             ) {
 //        TimeoutManager timeoutManager
 //        this.timeoutManager = timeoutManager;
@@ -174,7 +174,7 @@ public class PingHandler implements AbstractRequestHandler, AbstractResponseHand
     }
 
 	@Override
-	public void init(RoutingTable routingTable, BlockingQueue<ChannelMessage> channelOut,
+	public void init(RoutingTable routingTable, BlockingQueue<MessageCreater> channelOut,
 			TimeoutHandler timeoutManager) {
 		// TODO Auto-generated method stub
         this.routingTable = routingTable;

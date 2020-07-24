@@ -9,14 +9,14 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 import com.msc.node.distributednode.AbstractResponseHandler;
-import com.msc.node.distributednode.ChannelMessage;
+import com.msc.node.distributednode.MessageCreater;
 import com.msc.node.distributednode.Constants;
 import com.msc.node.distributednode.FileManager;
-import com.msc.node.distributednode.LeaveHandler;
-import com.msc.node.distributednode.PingHandler;
+import com.msc.node.distributednode.LeavingController;
+import com.msc.node.distributednode.PingHandling;
 import com.msc.node.distributednode.ResponseHandlerFactory;
 import com.msc.node.distributednode.RoutingTable;
-import com.msc.node.distributednode.SearchQueryHandler;
+import com.msc.node.distributednode.SearchQueryHandling;
 import com.msc.node.distributednode.TimeoutCallback;
 import com.msc.node.distributednode.TimeoutHandler;
 import com.msc.node.distributednode.UDPClient;
@@ -31,36 +31,36 @@ public class MessageBroker extends Thread {
     private final UDPServer server;
     private final UDPClient client;
 
-    private BlockingQueue<ChannelMessage> channelIn;
-    private BlockingQueue<ChannelMessage> channelOut;
+    private BlockingQueue<MessageCreater> channelIn;
+    private BlockingQueue<MessageCreater> channelOut;
 
     private RoutingTable routingTable;
-    private PingHandler pingHandler;
-    private LeaveHandler leaveHandler;
-    private SearchQueryHandler searchQueryHandler;
+    private PingHandling pingHandler;
+    private LeavingController leaveHandler;
+    private SearchQueryHandling searchQueryHandler;
     private FileManager fileManager;
 
     private TimeoutHandler timeoutHandler = new TimeoutHandler();
 
     public MessageBroker(String address, int port) throws SocketException {
-        channelIn = new LinkedBlockingQueue<ChannelMessage>();
+        channelIn = new LinkedBlockingQueue<MessageCreater>();
         DatagramSocket socket = new DatagramSocket(port);
         this.server = new UDPServer(channelIn, socket);
 
-        channelOut = new LinkedBlockingQueue<ChannelMessage>();
+        channelOut = new LinkedBlockingQueue<MessageCreater>();
         this.client = new UDPClient(channelOut, new DatagramSocket());
 
         this.routingTable = new RoutingTable(address, port);
 
-        this.pingHandler = PingHandler.getInstance();
-        this.leaveHandler = LeaveHandler.getInstance();
+        this.pingHandler = PingHandling.getInstance();
+        this.leaveHandler = LeavingController.getInstance();
 
         this.fileManager = FileManager.getInstance("");
 
         this.pingHandler.init(this.routingTable, this.channelOut, this.timeoutHandler);
         this.leaveHandler.init(this.routingTable, this.channelOut, this.timeoutHandler);
 
-        this.searchQueryHandler = SearchQueryHandler.getInstance();
+        this.searchQueryHandler = SearchQueryHandling.getInstance();
         this.searchQueryHandler.init(routingTable, channelOut, timeoutHandler);
 
         LOG.fine("starting server");
@@ -87,7 +87,7 @@ public class MessageBroker extends Thread {
     public void process() {
         while (process) {
             try {
-                ChannelMessage message = channelIn.poll(100, TimeUnit.MILLISECONDS);
+                MessageCreater message = channelIn.poll(100, TimeUnit.MILLISECONDS);
                 if (message != null) {
                     LOG.info("Received Message: "
                             + " from: " + message.getAddress()
@@ -123,11 +123,11 @@ public class MessageBroker extends Thread {
         this.searchQueryHandler.doSearch(keyword);
     }
 
-    public BlockingQueue<ChannelMessage> getChannelIn() {
+    public BlockingQueue<MessageCreater> getChannelIn() {
         return channelIn;
     }
 
-    public BlockingQueue<ChannelMessage> getChannelOut() {
+    public BlockingQueue<MessageCreater> getChannelOut() {
         return channelOut;
     }
 
@@ -151,7 +151,7 @@ public class MessageBroker extends Thread {
     }
 
     public void sendLeave() {
-        this.leaveHandler.sendLeave();
+        this.leaveHandler.leaveTheNetwork();
     }
 
     public String getFiles() {

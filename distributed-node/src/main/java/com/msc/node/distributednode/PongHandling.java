@@ -5,36 +5,36 @@ import java.util.StringTokenizer;
 import java.util.concurrent.BlockingQueue;
 import java.util.logging.Logger;
 
-public class PongHandler implements AbstractRequestHandler, AbstractResponseHandler{
+public class PongHandling implements AbstractRequestHandler, AbstractResponseHandler{
 
-    private final Logger LOG = Logger.getLogger(PongHandler.class.getName());
+    private final Logger LOG = Logger.getLogger(PongHandling.class.getName());
 
-    private BlockingQueue<ChannelMessage> channelOut;
+    private BlockingQueue<MessageCreater> channelOut;
 
     private RoutingTable routingTable;
 
-    private static PongHandler pongHandler;
+    private static PongHandling pongHandler;
     private TimeoutHandler timeoutHandler;
 
-    private PongHandler(){
+    private PongHandling(){
 
     }
 
-    public synchronized static PongHandler getInstance(){
+    public synchronized static PongHandling getInstance(){
         if (pongHandler == null){
-            pongHandler = new PongHandler();
+            pongHandler = new PongHandling();
         }
 
         return pongHandler;
     }
 
     @Override
-    public void sendRequest(ChannelMessage message) {
+    public void sendRequest(MessageCreater message) {
 
     }
 
     @Override
-    public void handleResponse(ChannelMessage message) {
+    public void handleResponse(MessageCreater message) {
         LOG.fine("Received PONG : " + message.getMessage()
                 + " from: " + message.getAddress()
                 + " port: " + message.getPort());
@@ -59,7 +59,7 @@ public class PongHandler implements AbstractRequestHandler, AbstractResponseHand
     
 
 	@Override
-	public void init(RoutingTable routingTable, BlockingQueue<ChannelMessage> channelOut,
+	public void init(RoutingTable routingTable, BlockingQueue<MessageCreater> channelOut,
 			TimeoutHandler timeoutHandler) {
 		this.routingTable = routingTable;
         this.channelOut = channelOut;

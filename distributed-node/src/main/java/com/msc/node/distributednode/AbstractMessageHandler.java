@@ -6,7 +6,7 @@ public interface AbstractMessageHandler {
 
     void init (
             RoutingTable routingTable,
-            BlockingQueue<ChannelMessage> outBlockingMessage,
+            BlockingQueue<MessageCreater> outBlockingMessage,
             TimeoutHandler timeoutHandler);
 
 }

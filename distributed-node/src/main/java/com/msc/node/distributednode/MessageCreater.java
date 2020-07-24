@@ -1,11 +1,11 @@
 package com.msc.node.distributednode;
 
-public class ChannelMessage {
+public class MessageCreater {
     private final String address;
     private final int port;
     private final String message;
 
-    public ChannelMessage(String address, int port, String message) {
+    public MessageCreater(String address, int port, String message) {
         this.address = address;
         this.port = port;
         this.message = message;

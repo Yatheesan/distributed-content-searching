@@ -5,8 +5,8 @@ import java.lang.StringBuilder;
 
 public class ResultTable{
 
-    private final int TABLEPADDING = 4;
-    private final char SEPERATOR_CHAR = '-';
+    private final int PADDINGSIZE = 4;
+    private final char SEPERATOR = '*';
 
     private ArrayList<String> headers;
     private ArrayList<ArrayList<String>> table;
@@ -35,14 +35,14 @@ public class ResultTable{
         String padder = "";
         String rowSeperator = "";
 
-        for(int i = 0; i < TABLEPADDING; i++){
+        for(int i = 0; i < PADDINGSIZE; i++){
             padder += " ";
         }
 
         for(int i = 0; i < maxLength.size(); i++){
-            sbRowSep.append("|");
-            for(int j = 0; j < maxLength.get(i)+(TABLEPADDING*2); j++){
-                sbRowSep.append(SEPERATOR_CHAR);
+            sbRowSep.append("*");
+            for(int j = 0; j < maxLength.get(i)+(PADDINGSIZE*2); j++){
+                sbRowSep.append(SEPERATOR);
             }
         }
         sbRowSep.append("|");

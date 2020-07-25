@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import com.msc.node.distributednode.fileTransfer.FileTransferClient;
+import com.msc.node.distributednode.fileTransfer.FileTransferServer;
 import com.msc.node.distributednode.search.MessageBroker;
 import com.msc.node.distributednode.search.SearchController;
 import com.msc.node.distributednode.search.SearchResponse;
@@ -22,6 +23,7 @@ public class Node {
     private MessageBroker messageBroker;
     private SearchController searchController;
     private DatagramSocket socket;
+    private FileTransferServer fileTransferServer;
 
     private final Logger LOG = Logger.getLogger(Node.class.getName());
 
@@ -34,6 +36,9 @@ public class Node {
         this.userName = userName;
         this.port = getFreePort();
         FileManager fileManager = FileManager.getInstance(userName);
+        this.fileTransferServer = new FileTransferServer(this.port + 100, userName);
+        Thread t = new Thread(fileTransferServer);
+        t.start();
 
         this.bsClient = new BSClient();
         this.messageBroker = new MessageBroker(ipAddress, port);

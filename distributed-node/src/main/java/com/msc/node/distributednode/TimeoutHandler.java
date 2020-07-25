@@ -19,7 +19,7 @@ public class TimeoutHandler {
     }
 
     public void registerResponse(String messageId) {
-        LOG.fine("RegisteringResponse : " + messageId);
+        LOG.fine("Registering Response : " + messageId);
         requests.remove(messageId);
     }
 

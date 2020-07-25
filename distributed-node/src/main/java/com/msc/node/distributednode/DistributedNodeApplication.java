@@ -12,8 +12,13 @@ public class DistributedNodeApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(DistributedNodeApplication.class, args);
 		try {
+			//Generate UUID
 			String uniqueID = UUID.randomUUID().toString();
-			Node node = new Node("node" + uniqueID);
+			String name = "node" + uniqueID;
+			System.out.println("Node User Name : " + name);
+			// Create the Node instance and pass the node user name with generated uuid
+			Node node = new Node(name);
+			// Starts the registration process
 			node.register();
 			Scanner scanner = new Scanner(System.in);
 			while (true){

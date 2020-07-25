@@ -14,7 +14,7 @@ public class PingHandling implements AbstractRequestHandler, AbstractResponseHan
     private static PingHandling pingHandler;
 
     private boolean initiated;
-    private BlockingQueue<MessageCreater> channelOut;
+    private BlockingQueue<MessageCreator> channelOut;
     private RoutingTable routingTable;
     private TimeoutHandler timeoutManager;
     private Map<String, Integer> pingFailureCount = new HashMap<String, Integer>();
@@ -31,7 +31,7 @@ public class PingHandling implements AbstractRequestHandler, AbstractResponseHan
         return pingHandler;
     }
 
-    public void sendRequest(MessageCreater message) {
+    public void sendRequest(MessageCreator message) {
         try {
             channelOut.put(message);
         } catch (InterruptedException e) {
@@ -40,7 +40,7 @@ public class PingHandling implements AbstractRequestHandler, AbstractResponseHan
     }
 
     @Override
-    public void handleResponse(MessageCreater message) {
+    public void handleResponse(MessageCreator message) {
 
         LOG.fine("Received PING : " + message.getMessage()
                 + " from: " + message.getAddress()
@@ -71,7 +71,7 @@ public class PingHandling implements AbstractRequestHandler, AbstractResponseHan
                                 this.routingTable.getAddress(), this.routingTable.getPort());
 
                         String rawMessage = String.format(Constants.MSG_FORMAT, payload.length() + 5, payload);
-                        MessageCreater outGoingMsg = new MessageCreater(address,
+                        MessageCreator outGoingMsg = new MessageCreator(address,
                                 port, rawMessage);
                         this.sendRequest(outGoingMsg);
                     } else {
@@ -100,7 +100,7 @@ public class PingHandling implements AbstractRequestHandler, AbstractResponseHan
                             this.routingTable.getAddress(), this.routingTable.getPort());
 
                     String rawMessage = String.format(Constants.MSG_FORMAT, payload.length() + 5, payload);
-                    MessageCreater outGoingMsg = new MessageCreater(address,
+                    MessageCreator outGoingMsg = new MessageCreator(address,
                             port, rawMessage);
                     this.sendRequest(outGoingMsg);
                 }
@@ -115,7 +115,7 @@ public class PingHandling implements AbstractRequestHandler, AbstractResponseHan
                 this.routingTable.getAddress(),
                 this.routingTable.getPort());
         String rawMessage = String.format(Constants.MSG_FORMAT, payload.length() + 5,payload);
-        MessageCreater message = new MessageCreater(address, port,rawMessage);
+        MessageCreator message = new MessageCreator(address, port,rawMessage);
         this.pingFailureCount.putIfAbsent(
                 String.format(Constants.PING_MESSAGE_ID_FORMAT, address, port),
                 0);
@@ -136,7 +136,7 @@ public class PingHandling implements AbstractRequestHandler, AbstractResponseHan
                 Constants.BPING_HOP_LIMIT);
         String rawMessage = String.format(Constants.MSG_FORMAT, payload.length() + 5,payload);
         for (String target: targets) {
-            MessageCreater message = new MessageCreater(
+            MessageCreator message = new MessageCreator(
                     target.split(":")[0],
                     Integer.parseInt(target.split(":")[1]), rawMessage);
             sendRequest(message);
@@ -154,7 +154,7 @@ public class PingHandling implements AbstractRequestHandler, AbstractResponseHan
                 currentHop);
         String rawMessage = String.format(Constants.MSG_FORMAT, payload.length() + 5,payload);
         for (String target: targets) {
-            MessageCreater message = new MessageCreater(
+            MessageCreator message = new MessageCreator(
                     target.split(":")[0],
                     Integer.parseInt(target.split(":")[1]), rawMessage);
             sendRequest(message);
@@ -163,7 +163,7 @@ public class PingHandling implements AbstractRequestHandler, AbstractResponseHan
 
     public void init(
             RoutingTable routingTable,
-            BlockingQueue<MessageCreater> channelOut
+            BlockingQueue<MessageCreator> channelOut
             ) {
 //        TimeoutManager timeoutManager
 //        this.timeoutManager = timeoutManager;
@@ -174,7 +174,7 @@ public class PingHandling implements AbstractRequestHandler, AbstractResponseHan
     }
 
 	@Override
-	public void init(RoutingTable routingTable, BlockingQueue<MessageCreater> channelOut,
+	public void init(RoutingTable routingTable, BlockingQueue<MessageCreator> channelOut,
 			TimeoutHandler timeoutManager) {
 		// TODO Auto-generated method stub
         this.routingTable = routingTable;

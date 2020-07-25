@@ -20,7 +20,7 @@ public class ResultTable{
             maxLength.add(headers.get(i).length());
         }
         this.table = content;
-        calcMaxLengthAll();
+        calculateMaxLengthAll();
     }
 
     public void updateField(int row, int col, String input){
@@ -84,7 +84,7 @@ public class ResultTable{
     }
 
 
-    private void calcMaxLengthAll(){
+    private void calculateMaxLengthAll(){
         for(int i = 0; i < table.size(); i++){
             ArrayList<String> temp = table.get(i);
             for(int j = 0; j < temp.size(); j++){

@@ -9,7 +9,7 @@ public class PongHandling implements AbstractRequestHandler, AbstractResponseHan
 
     private final Logger LOG = Logger.getLogger(PongHandling.class.getName());
 
-    private BlockingQueue<MessageCreater> channelOut;
+    private BlockingQueue<MessageCreator> channelOut;
 
     private RoutingTable routingTable;
 
@@ -29,12 +29,12 @@ public class PongHandling implements AbstractRequestHandler, AbstractResponseHan
     }
 
     @Override
-    public void sendRequest(MessageCreater message) {
+    public void sendRequest(MessageCreator message) {
 
     }
 
     @Override
-    public void handleResponse(MessageCreater message) {
+    public void handleResponse(MessageCreator message) {
         LOG.fine("Received PONG : " + message.getMessage()
                 + " from: " + message.getAddress()
                 + " port: " + message.getPort());
@@ -59,7 +59,7 @@ public class PongHandling implements AbstractRequestHandler, AbstractResponseHan
     
 
 	@Override
-	public void init(RoutingTable routingTable, BlockingQueue<MessageCreater> channelOut,
+	public void init(RoutingTable routingTable, BlockingQueue<MessageCreator> channelOut,
 			TimeoutHandler timeoutHandler) {
 		this.routingTable = routingTable;
         this.channelOut = channelOut;

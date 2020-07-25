@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 
 import com.msc.node.distributednode.fileTransfer.FileTransferClient;
 import com.msc.node.distributednode.fileTransfer.FileTransferServer;
-import com.msc.node.distributednode.search.MessageBroker;
+import com.msc.node.distributednode.search.MessagingService;
 import com.msc.node.distributednode.search.SearchController;
 import com.msc.node.distributednode.search.SearchResponse;
 
@@ -20,7 +20,7 @@ public class Node {
     private String userName;
     private String ipAddress;
     private int port;
-    private MessageBroker messageBroker;
+    private MessagingService messageBroker;
     private SearchController searchController;
     private DatagramSocket socket;
     private FileTransferServer fileTransferServer;
@@ -35,13 +35,13 @@ public class Node {
 
         this.userName = userName;
         this.port = getFreePort();
-        FileManager fileManager = FileManager.getInstance(userName);
+        FileManagerHandler fileManager = FileManagerHandler.getInstance(userName);
         this.fileTransferServer = new FileTransferServer(this.port + 100, userName);
         Thread t = new Thread(fileTransferServer);
         t.start();
 
         this.bsClient = new BSClient();
-        this.messageBroker = new MessageBroker(ipAddress, port);
+        this.messageBroker = new MessagingService(ipAddress, port);
 
         this.searchController = new SearchController(this.messageBroker);
 
@@ -56,12 +56,11 @@ public class Node {
         List<InetSocketAddress> targets = null;
         try{
             targets = this.bsClient.register(this.userName, this.ipAddress, this.port);
-            LOG.info("Registered Node");
-//            LOG.info(String.valueOf(targets));
-            System.out.println(targets);
+            LOG.info("Already Registered Node Details in the network:");
+            LOG.info(String.valueOf(targets));
             informChildNodes(targets);
         } catch (IOException e) {
-            LOG.severe("Registering node failed");
+            LOG.severe("Registering node process failed");
             e.printStackTrace();
         }
         return targets;
@@ -82,8 +81,10 @@ public class Node {
         // method to inform other nodes based on BS given ip address of other nodes
         if(targets != null) {
             for (InetSocketAddress target: targets) {
-                messageBroker.sendPing(target.getAddress().toString().substring(1), target.getPort());
+                messageBroker.sendPingMsg(target.getAddress().toString().substring(1), target.getPort());
             }
+        } else {
+            LOG.info("Neighbour nodes not found to get connect..");
         }
     }
 

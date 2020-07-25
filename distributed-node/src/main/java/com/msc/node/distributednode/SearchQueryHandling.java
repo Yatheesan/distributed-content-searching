@@ -13,16 +13,16 @@ public class SearchQueryHandling implements AbstractResponseHandler, AbstractReq
 
     private RoutingTable routingTable;
 
-    private BlockingQueue<MessageCreater> channelOut;
+    private BlockingQueue<MessageCreator> channelOut;
 
     private TimeoutHandler timeoutHandler;
 
     private static SearchQueryHandling searchQueryHandler;
 
-    private FileManager fileManager;
+    private FileManagerHandler fileManager;
 
     private SearchQueryHandling(){
-        fileManager = FileManager.getInstance("");
+        fileManager = FileManagerHandler.getInstance("");
     }
 
     public synchronized static SearchQueryHandling getInstance(){
@@ -42,7 +42,7 @@ public class SearchQueryHandling implements AbstractResponseHandler, AbstractReq
 
         String rawMessage = String.format(Constants.MSG_FORMAT, payload.length() + 5, payload);
 
-        MessageCreater initialMessage = new MessageCreater(
+        MessageCreator initialMessage = new MessageCreator(
                 this.routingTable.getAddress(),
                 this.routingTable.getPort(),
                 rawMessage);
@@ -51,7 +51,7 @@ public class SearchQueryHandling implements AbstractResponseHandler, AbstractReq
     }
 
     @Override
-    public void sendRequest(MessageCreater message) {
+    public void sendRequest(MessageCreator message) {
         try {
             channelOut.put(message);
         } catch (InterruptedException e) {
@@ -60,7 +60,7 @@ public class SearchQueryHandling implements AbstractResponseHandler, AbstractReq
     }
 
     @Override
-    public void init(RoutingTable routingTable, BlockingQueue<MessageCreater> channelOut,
+    public void init(RoutingTable routingTable, BlockingQueue<MessageCreator> channelOut,
                      TimeoutHandler timeoutHandler) {
         this.routingTable = routingTable;
         this.channelOut = channelOut;
@@ -68,7 +68,7 @@ public class SearchQueryHandling implements AbstractResponseHandler, AbstractReq
     }
 
     @Override
-    public void handleResponse(MessageCreater message) {
+    public void handleResponse(MessageCreator message) {
         LOG.fine("Received SER : " + message.getMessage()
                 + " from: " + message.getAddress()
                 + " port: " + message.getPort());
@@ -106,7 +106,7 @@ public class SearchQueryHandling implements AbstractResponseHandler, AbstractReq
 
             String rawMessage = String.format(Constants.MSG_FORMAT, payload.length() + 5, payload);
 
-            MessageCreater queryHitMessage = new MessageCreater(address,
+            MessageCreator queryHitMessage = new MessageCreator(address,
                     port,
                     rawMessage);
 
@@ -134,7 +134,7 @@ public class SearchQueryHandling implements AbstractResponseHandler, AbstractReq
 
                 String rawMessage = String.format(Constants.MSG_FORMAT, payload.length() + 5, payload);
 
-                MessageCreater queryMessage = new MessageCreater(neighbour.getAddress(),
+                MessageCreator queryMessage = new MessageCreator(neighbour.getAddress(),
                         neighbour.getPort(),
                         rawMessage);
 

@@ -4,14 +4,14 @@ package com.msc.node.distributednode;
 
 import java.util.logging.Logger;
 
-import com.msc.node.distributednode.search.MessageBroker;
+import com.msc.node.distributednode.search.MessagingService;
 
 public class ResponseHandlerFactory {
 
     private static final Logger LOG = Logger.getLogger(ResponseHandlerFactory.class.getName());
 
     public static AbstractResponseHandler getResponseHandler(String keyword,
-                                                             MessageBroker messageBroker){
+                                                             MessagingService messageBroker){
         switch (keyword){
             case "PING":
                 AbstractResponseHandler pingHandler = PingHandling.getInstance();

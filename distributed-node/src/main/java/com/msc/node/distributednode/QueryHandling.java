@@ -12,7 +12,7 @@ public class QueryHandling implements AbstractResponseHandler {
 
     private RoutingTable routingTable;
 
-    private BlockingQueue<MessageCreater> channelOut;
+    private BlockingQueue<MessageCreator> channelOut;
 
     private TimeoutHandler timeoutHandler;
 
@@ -35,7 +35,7 @@ public class QueryHandling implements AbstractResponseHandler {
     }
 
     @Override
-    public synchronized void handleResponse(MessageCreater message) {
+    public synchronized void handleResponse(MessageCreator message) {
         LOG.fine("Received SEROK : " + message.getMessage()
                 + " from: " + message.getAddress()
                 + " port: " + message.getPort());
@@ -70,7 +70,7 @@ public class QueryHandling implements AbstractResponseHandler {
     }
 
     @Override
-    public void init(RoutingTable routingTable, BlockingQueue<MessageCreater> channelOut, TimeoutHandler timeoutHandler) {
+    public void init(RoutingTable routingTable, BlockingQueue<MessageCreator> channelOut, TimeoutHandler timeoutHandler) {
         this.routingTable = routingTable;
         this.channelOut = channelOut;
         this.timeoutHandler = timeoutHandler;

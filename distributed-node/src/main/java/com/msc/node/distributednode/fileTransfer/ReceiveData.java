@@ -49,16 +49,16 @@ public class ReceiveData implements Runnable {
             OutputStream output = new FileOutputStream(fileName);
             long size = serverData.readLong();
             byte[] buffer = new byte[1024];
+            System.err.println("File Size : "+ size);
+            System.err.println("Download started...");
             while (size > 0 && (bytesRead = serverData.read(buffer, 0, (int) Math.min(buffer.length, size))) != -1) {
                 output.write(buffer, 0, bytesRead);
                 size -= bytesRead;
+                System.err.println("Pending File Size to download : " + size);
             }
-
             output.close();
             serverData.close();
-
-          
-
+            System.err.println("File download completed...");
         } catch (IOException ex) {
             System.err.println("server error. Connection closed.");
             ex.printStackTrace();

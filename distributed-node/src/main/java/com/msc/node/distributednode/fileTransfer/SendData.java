@@ -12,7 +12,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.util.logging.Logger;
 
-import com.msc.node.distributednode.FileManager;
+import com.msc.node.distributednode.FileManagerHandler;
 
 public class SendData implements Runnable {
 
@@ -37,7 +37,7 @@ public class SendData implements Runnable {
             String fileName = dIn.readUTF();
 
             if (fileName != null) {
-                sendFile(FileManager.getInstance("").getFile(fileName));
+                sendFile(FileManagerHandler.getInstance("").getFile(fileName));
             }
             in.close();
         } catch (IOException e) {

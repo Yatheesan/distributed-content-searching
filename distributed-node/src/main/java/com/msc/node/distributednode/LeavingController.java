@@ -8,7 +8,7 @@ import java.util.concurrent.BlockingQueue;
 public class LeavingController implements AbstractRequestHandler {
 
     private RoutingTable routingTable;
-    private BlockingQueue<MessageCreater> channelOut;
+    private BlockingQueue<MessageCreator> channelOut;
     private static LeavingController leaveHandler;
 
     public synchronized static LeavingController getInstance() {
@@ -25,7 +25,7 @@ public class LeavingController implements AbstractRequestHandler {
         String rawMessage = String.format(Constants.MSG_FORMAT, payload.length() + 5,payload);
         ArrayList<Neighbour> neighbours = routingTable.getNeighbours();
         for (Neighbour n: neighbours) {
-            MessageCreater message = new MessageCreater(n.getAddress(), n.getPort(),rawMessage);
+            MessageCreator message = new MessageCreator(n.getAddress(), n.getPort(),rawMessage);
             sendRequest(message);
         }
 
@@ -33,14 +33,14 @@ public class LeavingController implements AbstractRequestHandler {
 
     @Override
     public void init(RoutingTable routingTable,
-                     BlockingQueue<MessageCreater> channelOut,
+                     BlockingQueue<MessageCreator> channelOut,
                      TimeoutHandler timeoutManager) {
         this.routingTable = routingTable;
         this.channelOut = channelOut;
     }
 
     @Override
-    public void sendRequest(MessageCreater message) {
+    public void sendRequest(MessageCreator message) {
         try {
             channelOut.put(message);
         } catch (InterruptedException e) {

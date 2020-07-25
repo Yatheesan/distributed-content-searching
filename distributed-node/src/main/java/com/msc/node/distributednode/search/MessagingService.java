@@ -9,9 +9,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 import com.msc.node.distributednode.AbstractResponseHandler;
-import com.msc.node.distributednode.MessageCreater;
+import com.msc.node.distributednode.MessageCreator;
 import com.msc.node.distributednode.Constants;
-import com.msc.node.distributednode.FileManager;
+import com.msc.node.distributednode.FileManagerHandler;
 import com.msc.node.distributednode.LeavingController;
 import com.msc.node.distributednode.PingHandling;
 import com.msc.node.distributednode.ResponseHandlerFactory;
@@ -22,32 +22,32 @@ import com.msc.node.distributednode.TimeoutHandler;
 import com.msc.node.distributednode.UDPClient;
 import com.msc.node.distributednode.UDPServer;
 
-public class MessageBroker extends Thread {
+public class MessagingService extends Thread {
 
-    private final Logger LOG = Logger.getLogger(MessageBroker.class.getName());
+    private final Logger LOG = Logger.getLogger(MessagingService.class.getName());
 
     private volatile boolean process = true;
 
     private final UDPServer server;
     private final UDPClient client;
 
-    private BlockingQueue<MessageCreater> channelIn;
-    private BlockingQueue<MessageCreater> channelOut;
+    private BlockingQueue<MessageCreator> channelIn;
+    private BlockingQueue<MessageCreator> channelOut;
 
     private RoutingTable routingTable;
     private PingHandling pingHandler;
     private LeavingController leaveHandler;
     private SearchQueryHandling searchQueryHandler;
-    private FileManager fileManager;
+    private FileManagerHandler fileManager;
 
     private TimeoutHandler timeoutHandler = new TimeoutHandler();
 
-    public MessageBroker(String address, int port) throws SocketException {
-        channelIn = new LinkedBlockingQueue<MessageCreater>();
+    public MessagingService(String address, int port) throws SocketException {
+        channelIn = new LinkedBlockingQueue<MessageCreator>();
         DatagramSocket socket = new DatagramSocket(port);
         this.server = new UDPServer(channelIn, socket);
 
-        channelOut = new LinkedBlockingQueue<MessageCreater>();
+        channelOut = new LinkedBlockingQueue<MessageCreator>();
         this.client = new UDPClient(channelOut, new DatagramSocket());
 
         this.routingTable = new RoutingTable(address, port);
@@ -55,7 +55,7 @@ public class MessageBroker extends Thread {
         this.pingHandler = PingHandling.getInstance();
         this.leaveHandler = LeavingController.getInstance();
 
-        this.fileManager = FileManager.getInstance("");
+        this.fileManager = FileManagerHandler.getInstance("");
 
         this.pingHandler.init(this.routingTable, this.channelOut, this.timeoutHandler);
         this.leaveHandler.init(this.routingTable, this.channelOut, this.timeoutHandler);
@@ -87,7 +87,7 @@ public class MessageBroker extends Thread {
     public void process() {
         while (process) {
             try {
-                MessageCreater message = channelIn.poll(100, TimeUnit.MILLISECONDS);
+                MessageCreator message = channelIn.poll(100, TimeUnit.MILLISECONDS);
                 if (message != null) {
                     LOG.info("Received Message: "
                             + " from: " + message.getAddress()
@@ -115,7 +115,7 @@ public class MessageBroker extends Thread {
         server.stopProcessing();
     }
 
-    public void sendPing(String address, int port) {
+    public void sendPingMsg(String address, int port) {
         this.pingHandler.sendPing(address, port);
     }
 
@@ -123,11 +123,11 @@ public class MessageBroker extends Thread {
         this.searchQueryHandler.doSearch(keyword);
     }
 
-    public BlockingQueue<MessageCreater> getChannelIn() {
+    public BlockingQueue<MessageCreator> getChannelIn() {
         return channelIn;
     }
 
-    public BlockingQueue<MessageCreater> getChannelOut() {
+    public BlockingQueue<MessageCreator> getChannelOut() {
         return channelOut;
     }
 
@@ -145,7 +145,7 @@ public class MessageBroker extends Thread {
         for (String n: neighbours) {
             String address = n.split(":")[0];
             int port = Integer.valueOf(n.split(":")[1]);
-            sendPing(address, port);
+            sendPingMsg(address, port);
 
         }
     }

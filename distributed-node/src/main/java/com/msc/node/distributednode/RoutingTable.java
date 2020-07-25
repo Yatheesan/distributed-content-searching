@@ -39,6 +39,7 @@ public class RoutingTable {
             }
         }
         if (toRemove != null) {
+            System.out.println("Removed neighbour.. :" + toRemove.getAddress());
             neighbours.remove(toRemove);
             return neighbours.size();
         }
@@ -51,7 +52,7 @@ public class RoutingTable {
     public synchronized void print() {
         System.out.println("Total neighbours: " + neighbours.size());
         System.out.println("Address: " + address + ":" + port);
-        System.out.println("++++++++++++++++++++++++++");
+        System.out.println("============================================");
         for (Neighbour n :neighbours) {
             System.out.println(
                     "Address: " + n.getAddress()
@@ -64,7 +65,7 @@ public class RoutingTable {
     public synchronized String toString() {
         String table = "Total neighbours: " + neighbours.size() + "\n";
         table += "Address: " + address + ":" + port + "\n";
-        table += "++++++++++++++++++++++++++" + "\n";
+        table += "============================================" + "\n";
         for (Neighbour n :neighbours) {
             table +=
                     "Address: " + n.getAddress()

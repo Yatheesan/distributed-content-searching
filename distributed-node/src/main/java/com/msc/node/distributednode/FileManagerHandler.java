@@ -13,9 +13,9 @@ import java.util.Random;
 import java.util.Set;
 import java.util.logging.Logger;
 
-public class FileManager {
+public class FileManagerHandler {
 
-	  private static FileManager fileManager;
+	  private static FileManagerHandler fileManagerHandler;
 
 	    private Map<String, String> files;
 
@@ -25,9 +25,9 @@ public class FileManager {
 	    private String rootFolder;
 
 
-	    private final Logger LOG = Logger.getLogger(FileManager.class.getName());
+	    private final Logger LOG = Logger.getLogger(FileManagerHandler.class.getName());
 
-	    private FileManager(String userName) {
+	    private FileManagerHandler(String userName) {
 	        files = new HashMap<>();
 
 	        this.userName = userName;
@@ -44,12 +44,12 @@ public class FileManager {
 	        printFileNames();
 	    }
 
-	    public static synchronized FileManager getInstance(String userName) {
-	        if (fileManager == null) {
-	            fileManager = new FileManager(userName);
+	    public static synchronized FileManagerHandler getInstance(String userName) {
+	        if (fileManagerHandler == null) {
+				fileManagerHandler = new FileManagerHandler(userName);
 
 	        }
-	        return fileManager;
+	        return fileManagerHandler;
 	    }
 
 	    public boolean addFile(String fileName, String filePath) {
@@ -101,8 +101,8 @@ public class FileManager {
 	    }
 
 	    private void printFileNames() {
-	        System.out.println("Total files: " + files.size());
-	        System.out.println("++++++++++++++++++++++++++");
+	        System.out.println("Total available files: " + files.size());
+	        System.out.println("===========================================");
 	        for (String s: files.keySet()) {
 	            System.out.println(s);
 	            createFile(s);
@@ -110,8 +110,8 @@ public class FileManager {
 	    }
 
 	    public String getFileNames() {
-	        String fileString = "Total files: " + files.size() + "\n";
-	        fileString += "++++++++++++++++++++++++++\n";
+	        String fileString = "Total available files: " + files.size() + "\n";
+	        fileString += "===========================================\n";
 	        for (String s: files.keySet()) {
 	            fileString += s + "\n";
 	        }
@@ -129,7 +129,7 @@ public class FileManager {
 	            RandomAccessFile f = new RandomAccessFile(file, "rw");
 	            f.setLength(1024 * 1024 * 8);
 	        } catch (IOException e) {
-	            LOG.severe("File creating failed");
+	            LOG.severe("Failed to create File");
 	            e.printStackTrace();
 	        }
 	    }

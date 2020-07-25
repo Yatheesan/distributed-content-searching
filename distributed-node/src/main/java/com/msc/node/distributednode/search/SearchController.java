@@ -2,7 +2,6 @@ package com.msc.node.distributednode.search;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.msc.node.distributednode.QueryHandling;
@@ -10,12 +9,12 @@ import com.msc.node.distributednode.ResultTable;
 
 public class SearchController {
 
-	private MessageBroker msgBroker;
+	private MessagingService messagingService;
 
     private Map<Integer, SearchResponse> fileDownloadOptions;
 
-    public SearchController(MessageBroker msgBroker) {
-        this.msgBroker = msgBroker;
+    public SearchController(MessagingService msgBroker) {
+        this.messagingService = msgBroker;
     }
 
     public int doSearch(String searchWord) {
@@ -27,9 +26,9 @@ public class SearchController {
         queryHandler.setSearchResutls(response);
         queryHandler.setSearchInitiatedTime(System.currentTimeMillis());
 
-        this.msgBroker.doSearch(searchWord);
+        this.messagingService.doSearch(searchWord);
 
-        System.out.println("Results are retireving..");
+        System.out.println("Results are retrieving..");
 
         try {
             Thread.sleep(3000);
@@ -55,8 +54,8 @@ public class SearchController {
         System.out.println("\nFile search results : ");
 
         ArrayList<String> headers = new ArrayList<String>();
-        headers.add("Number");
-        headers.add("Name");
+        headers.add("Option Number");
+        headers.add("File Name");
         headers.add("Source address");
         headers.add("Searching time (ms)");
         headers.add("Hop counts");

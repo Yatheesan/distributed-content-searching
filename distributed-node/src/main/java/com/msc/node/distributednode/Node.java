@@ -121,4 +121,12 @@ public class Node {
             throw new RuntimeException("Getting free port failed");
         }
     }
+
+    public void printRoutingTable(){
+        this.messageBroker.getRoutingTable().print();
+    }
+
+    public String getRoutingTable() {
+        return this.messageBroker.getRoutingTable().toString();
+    }
 }

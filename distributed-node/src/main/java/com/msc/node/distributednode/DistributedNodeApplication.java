@@ -27,6 +27,7 @@ public class DistributedNodeApplication {
 				System.out.println("\nChoose one of the following options : ");
 				System.out.println("A) Search for a file");
 				System.out.println("B) Leave the network");
+				System.out.println("C) Print Routing Table");
 
 				System.out.println("\nPlease enter the option : ");
 
@@ -69,6 +70,8 @@ public class DistributedNodeApplication {
 				} else if (commandOption.equals("B")){
 					node.unRegister();
 					System.exit(0);
+				} else if (commandOption.equals("C")){
+					node.printRoutingTable();
 				} else {
 					System.out.println("Please enter a valid option...");
 				}

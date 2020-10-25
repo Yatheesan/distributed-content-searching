@@ -53,7 +53,7 @@ public class PingHandling implements AbstractRequestHandler, AbstractResponseHan
         String address = stringToken.nextToken().trim();
         int port = Integer.parseInt(stringToken.nextToken().trim());
         switch (keyword) {
-            case "BJOINOK":
+            case "BJOIN":
                 int hops = Integer.parseInt(stringToken.nextToken().trim());
 
                 //if a neighbour sends a bping, pass it to the other neighbours

@@ -13,7 +13,8 @@ public class ResponseHandlerFactory {
     public static AbstractResponseHandler getResponseHandler(String keyword,
                                                              MessagingService messageBroker){
         switch (keyword){
-            case "PING":
+            case "JOIN":
+                System.out.println("JOIN Response Handler Started");
                 AbstractResponseHandler pingHandler = PingHandling.getInstance();
                 pingHandler.init(
                         messageBroker.getRoutingTable(),
@@ -22,7 +23,7 @@ public class ResponseHandlerFactory {
                 );
                 return pingHandler;
 
-            case "BPING":
+            case "BJOIN":
                 AbstractResponseHandler bPingHandler = PingHandling.getInstance();
                 bPingHandler.init(
                         messageBroker.getRoutingTable(),
@@ -31,7 +32,8 @@ public class ResponseHandlerFactory {
                 );
                 return bPingHandler;
 
-            case "PONG":
+            case "JOINOK":
+                System.out.println("JOINOK Response Handler Started");
                 AbstractResponseHandler pongHandler = PongHandling.getInstance();
                 pongHandler.init(
                         messageBroker.getRoutingTable(),
@@ -40,7 +42,7 @@ public class ResponseHandlerFactory {
                 );
                 return pongHandler;
 
-            case "BPONG":
+            case "BJOINOK":
                 AbstractResponseHandler bpongHandler = PongHandling.getInstance();
                 bpongHandler.init(
                         messageBroker.getRoutingTable(),
@@ -50,6 +52,7 @@ public class ResponseHandlerFactory {
                 return bpongHandler;
 
             case "SER":
+                System.out.println("SER Response Handler Started");
                 AbstractResponseHandler searchQueryHandler = SearchQueryHandling.getInstance();
                 searchQueryHandler.init(messageBroker.getRoutingTable(),
                         messageBroker.getChannelOut(),
@@ -57,6 +60,7 @@ public class ResponseHandlerFactory {
                 return searchQueryHandler;
 
             case "SEROK":
+                System.out.println("SEROK Response Handler Started");
                 AbstractResponseHandler queryHitHandler = QueryHandling.getInstance();
                 queryHitHandler.init(messageBroker.getRoutingTable(),
                         messageBroker.getChannelOut(),
@@ -64,6 +68,7 @@ public class ResponseHandlerFactory {
                 return queryHitHandler;
 
             case "LEAVE":
+                System.out.println("LEAVE Response Handler Started");
                 AbstractResponseHandler leaveHandler = PingHandling.getInstance();
                 leaveHandler.init(
                         messageBroker.getRoutingTable(),

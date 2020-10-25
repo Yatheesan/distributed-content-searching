@@ -44,14 +44,13 @@ public class PongHandling implements AbstractRequestHandler, AbstractResponseHan
         String keyword = stringToken.nextToken();
         String address = stringToken.nextToken().trim();
         int port = Integer.parseInt(stringToken.nextToken().trim());
-        if(keyword.equals("BPONG")) {
+        if(keyword.equals("BJOINOK")) {
             if(routingTable.getCount() < Constants.MIN_NEIGHBOURS) {
                 this.routingTable.addNeighbour(address, port, message.getPort());
             }
         } else {
             this.timeoutHandler.registerResponse(String.format(Constants.PING_MESSAGE_ID_FORMAT,address,port));
             this.routingTable.addNeighbour(address, port, message.getPort());
-
         }
 
     }

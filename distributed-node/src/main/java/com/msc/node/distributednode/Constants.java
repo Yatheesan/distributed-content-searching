@@ -15,13 +15,13 @@ public class Constants {
     public static final String REGOK = "REGOK";
     public static final String UNROK = "UNROK";
 
-    public static final String PING_FORMAT = "PING %s %s";
-    public static final String PONG_FORMAT = "PONG %s %s";
+    public static final String PING_FORMAT = "JOIN %s %s";
+    public static final String PONG_FORMAT = "JOINOK %s %s";
 
     public static final String LEAVE_FORMAT = "LEAVE %s %s";
 
-    public static final String BPING_FORMAT = "BPING %s %s %s";
-    public static final String BPONG_FORMAT = "BPONG %s %s";
+    public static final String BPING_FORMAT = "BJOIN %s %s %s";
+    public static final String BPONG_FORMAT = "BJOINOK %s %s";
     public static final int BPING_HOP_LIMIT = 3;
 
     public static final String QUERY_FORMAT = "SER %s %s %s %s";

@@ -35,6 +35,7 @@ public class Node {
 
         this.userName = userName;
         this.port = getFreePort();
+        System.out.println("Assigned Port:"+ port);
         FileManagerHandler fileManager = FileManagerHandler.getInstance(userName);
         this.fileTransferServer = new FileTransferServer(this.port + 100, userName);
         Thread t = new Thread(fileTransferServer);
@@ -70,7 +71,6 @@ public class Node {
         try{
             this.bsClient.unRegister(this.userName, this.ipAddress, this.port);
             this.messageBroker.sendLeave();
-//            this.communicationManager.sendLeave();
         } catch (IOException e) {
             LOG.severe("Un-Registering node from network failed");
             e.printStackTrace();

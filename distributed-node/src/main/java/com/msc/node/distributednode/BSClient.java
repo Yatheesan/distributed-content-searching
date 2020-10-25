@@ -38,6 +38,8 @@ public class BSClient {
 
     private List<InetSocketAddress> processBSResponse(String response){
 
+        LOG.info("Received Response from BS :" + response);
+
         StringTokenizer stringToken = new StringTokenizer(response, " ");
 
         String length = stringToken.nextToken();
@@ -117,24 +119,6 @@ public class BSClient {
     }
 
     private void readProperties() {
-//        Properties bsProperties = new Properties();
-//        try {
-//            bsProperties.load(getClass().getClassLoader().getResourceAsStream(
-//                    Constants.BS_PROPERTIES));
-//
-//        } catch (IOException e) {
-//            LOG.severe("Could not open " + Constants.BS_PROPERTIES);
-//            throw new RuntimeException("Could not open " + Constants.BS_PROPERTIES);
-//        } catch (NullPointerException e) {
-//            LOG.severe("Could not find " + Constants.BS_PROPERTIES);
-//            throw new RuntimeException("Could not find " + Constants.BS_PROPERTIES);
-//        }
-
-//        this.BS_IPAddress = bsProperties.getProperty("bootstrap.ip");
-//        this.BS_Port = Integer.parseInt(bsProperties.getProperty("bootstrap.port"));
-//
-//        bsProperties.getProperty("bootstrap.ip");
-
         this.BS_IPAddress = "127.0.0.1";
         this.BS_Port = 55555;
     }

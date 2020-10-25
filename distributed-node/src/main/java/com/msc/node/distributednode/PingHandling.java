@@ -53,7 +53,7 @@ public class PingHandling implements AbstractRequestHandler, AbstractResponseHan
         String address = stringToken.nextToken().trim();
         int port = Integer.parseInt(stringToken.nextToken().trim());
         switch (keyword) {
-            case "BPING":
+            case "BJOINOK":
                 int hops = Integer.parseInt(stringToken.nextToken().trim());
 
                 //if a neighbour sends a bping, pass it to the other neighbours
@@ -93,6 +93,7 @@ public class PingHandling implements AbstractRequestHandler, AbstractResponseHan
 
                 break;
             default:
+                System.out.println("Default logic");
                 int result = this.routingTable.addNeighbour(address, port, message.getPort());
 
                 if (result != 0) {
@@ -165,18 +166,13 @@ public class PingHandling implements AbstractRequestHandler, AbstractResponseHan
             RoutingTable routingTable,
             BlockingQueue<MessageCreator> channelOut
             ) {
-//        TimeoutManager timeoutManager
-//        this.timeoutManager = timeoutManager;
             this.routingTable = routingTable;
             this.channelOut = channelOut;
-
-
     }
 
 	@Override
 	public void init(RoutingTable routingTable, BlockingQueue<MessageCreator> channelOut,
 			TimeoutHandler timeoutManager) {
-		// TODO Auto-generated method stub
         this.routingTable = routingTable;
         this.channelOut = channelOut;
         this.timeoutManager = timeoutManager;
